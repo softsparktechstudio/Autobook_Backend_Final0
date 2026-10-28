@@ -53,7 +53,7 @@ app.post("/api/auth/login", async (req, res) => {
     .trim()
     .min(3)
     .max(254)
-    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Enter a valid email address."),
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/),
   password: z.string().min(1).max(200)
 });
   const parsed = schema.safeParse(req.body);

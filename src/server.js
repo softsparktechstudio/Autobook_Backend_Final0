@@ -19,12 +19,21 @@ app.use(helmet());
 const frontendOrigin = (
   process.env.FRONTEND_ORIGIN ||
   "https://autobook-frontend-final-1.onrender.com"
-).trim().replace(/\/+$/, "");
+)
+  .trim()
+  .replace(/\/+$/, "");
 
 app.use(cors({
-  origin: frontendOrigin,
+  origin: (origin, callback) => {
+    // Allow requests without an Origin header, such as server-to-server calls.
+    if (!origin || origin.replace(/\/+$/, "") === frontendOrigin) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Origin not allowed by CORS"));
+  },
   methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
 app.use(express.json({ limit: "1mb" }));

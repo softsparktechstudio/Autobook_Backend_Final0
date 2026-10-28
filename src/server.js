@@ -16,7 +16,7 @@ const jwtSecret = process.env.JWT_SECRET || "";
 
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_ORIGIN || "http://localhost:5173",
+  origin: process.env.FRONTEND_ORIGIN || "https://autobook-frontend-final-1.onrender.com",
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));

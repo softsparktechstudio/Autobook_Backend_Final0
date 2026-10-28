@@ -48,7 +48,14 @@ app.get("/api/health", async (_req, res) => {
 });
 
 app.post("/api/auth/login", async (req, res) => {
-  const schema = z.object({ email: z.string().email().max(254), password: z.string().min(1).max(200) });
+ const schema = z.object({
+  email: z.string()
+    .trim()
+    .min(3)
+    .max(254)
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Enter a valid email address."),
+  password: z.string().min(1).max(200)
+});
   const parsed = schema.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: "Enter a valid email and password." });
   if (jwtSecret.length < 32) return res.status(500).json({ error: "Configure a JWT_SECRET of at least 32 characters in backend/.env." });

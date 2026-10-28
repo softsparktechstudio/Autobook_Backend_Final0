@@ -15,11 +15,18 @@ const port = Number(process.env.PORT || 5000);
 const jwtSecret = process.env.JWT_SECRET || "";
 
 app.use(helmet());
+
+const frontendOrigin = (
+  process.env.FRONTEND_ORIGIN ||
+  "https://autobook-frontend-final-1.onrender.com"
+).trim().replace(/\/+$/, "");
+
 app.use(cors({
-  origin: process.env.FRONTEND_ORIGIN || "https://autobook-frontend-final-1.onrender.com",
+  origin: frontendOrigin,
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
 app.use(express.json({ limit: "1mb" }));
 
 app.get("/api/health", async (_req, res) => {
